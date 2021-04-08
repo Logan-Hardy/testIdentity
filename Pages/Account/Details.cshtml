@@ -1,0 +1,59 @@
+﻿@page
+@model DetailsModel
+@*@using Microsoft.AspNetCore.Components.Authorization;
+@attribute [Authorize];*@
+
+<table class="table table-sm table-bordered">
+    <tbody>
+        @if (Model.IdentityUser == null)
+        {
+            <tr><th class="text-center">No User</th></tr>
+        }
+        else
+        {
+            <tr><th>Name</th><td>@Model.IdentityUser.UserName</td></tr>
+            <tr><th>Email</th><td>@Model.IdentityUser.Email</td></tr>
+            <tr><th>Password Hash</th><td>@Model.IdentityUser.PasswordHash</td></tr>
+            <tr><th>Two Factor Auth</th><td>@Model.IdentityUser.TwoFactorEnabled</td></tr>
+            <tr><th>Concurrency Stamp</th><td>@Model.IdentityUser.ConcurrencyStamp</td></tr>
+            <tr><th>Access Failed Count</th><td>@Model.IdentityUser.AccessFailedCount</td></tr>
+        }
+    </tbody>
+</table>
+
+<br />
+<br />
+
+@*<AuthorizeView Roles="Admin">
+    <Authorized>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+    </Authorized>
+    <NotAuthorized>
+        (Not Authorized)
+    </NotAuthorized>
+</AuthorizeView>*@
+
+@functions {
+
+    public class DetailsModel : PageModel
+    {
+        private UserManager<IdentityUser> userManager;
+
+        public DetailsModel(UserManager<IdentityUser> manager)
+        {
+            userManager = manager;
+        }
+
+        public IdentityUser IdentityUser { get; set; }
+
+        public async Task OnGetAsync()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                IdentityUser = await userManager.FindByNameAsync(User.Identity.Name);
+            }
+        }
+    }
+}

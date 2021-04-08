@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+@*@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@attribute [Authorize]
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy.</p>
+
+
+<AuthorizeView Roles="Admins">
+    <Authorized>
+        @(String.Join(", ", d.People.Select(p => p.Location.City).Distinct()))
+    </Authorized>
+    <NotAuthorized>
+        (Not authorized)
+    </NotAuthorized>
+</AuthorizeView>*@
